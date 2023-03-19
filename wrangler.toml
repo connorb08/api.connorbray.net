@@ -1,0 +1,16 @@
+name = "connorbrayapi"
+main = "./src/index.ts"
+compatibility_date = "2023-03-18"
+
+[build]
+command = "yarn"
+
+[env.producton]
+name = "connorbrayapi"
+routes = [{pattern = "api.connorbray.net/*", zone_id = "e8496c1028b3218d304c07b74fe48c8d"}]
+
+
+#[[services]]
+#binding = "api"
+#service = "connorbrayapi"
+#environment = "production"
