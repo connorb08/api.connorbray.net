@@ -1,6 +1,7 @@
 {
   "name": "connorbrayapi",
-  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "allowOverwrite": "true",
   "version": "0.0.0",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230307.0",
@@ -12,6 +13,7 @@
   "scripts": {
     "start": "wrangler dev",
     "deploy": "wrangler publish",
-    "test": "vitest"
+    "test": "vitest",
+    "build": "wrangler publish --dry-run --outdir=dist"
   }
 }

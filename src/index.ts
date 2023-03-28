@@ -1,33 +1,48 @@
-/**
- * Welcome to Cloudflare Workers! This is your first worker.
- *
- * - Run `wrangler dev src/index.ts` in your terminal to start a development server
- * - Open a browser tab at http://localhost:8787/ to see your worker in action
- * - Run `wrangler publish src/index.ts --name my-worker` to publish your worker
- *
- * Learn more at https://developers.cloudflare.com/workers/
- */
+import { CRouter } from "./CRouter";
 
-export interface Env {
-	// Example binding to KV. Learn more at https://developers.cloudflare.com/workers/runtime-apis/kv/
-	// MY_KV_NAMESPACE: KVNamespace;
-	//
-	// Example binding to Durable Object. Learn more at https://developers.cloudflare.com/workers/runtime-apis/durable-objects/
-	// MY_DURABLE_OBJECT: DurableObjectNamespace;
-	//
-	// Example binding to R2. Learn more at https://developers.cloudflare.com/workers/runtime-apis/r2/
-	// MY_BUCKET: R2Bucket;
-	//
-	// Example binding to a Service. Learn more at https://developers.cloudflare.com/workers/runtime-apis/service-bindings/
-	// MY_SERVICE: Fetcher;
-}
+export interface Env {}
+
+const router = new CRouter();
+
+router.all('/', (req, res, next) : Response | void => {
+
+    console.log(`Request found, method: ${req.method}`);
+
+    const path = new URL(req.url).pathname
+    if (path === "/") {
+        return res.send(JSON.stringify({message: "Site is connected to the API Worker!"}));
+    }
+    
+    next()
+
+})
+
+router.get('/path', (req, res, next) : Response | void => {
+
+    next()
+
+})
+
+router.get('/path', (req, res, next) : Response | void => {
+    
+    return res.send("/path second found")
+
+})
+
+// Error catcher
+router.all('/', (req, res, next) : Response | void => {
+    return res.status(404).send('not found')
+})
 
 export default {
 	async fetch(
-		request: Request,
-		env: Env,
-		ctx: ExecutionContext
-	): Promise<Response> {
-		return new Response(JSON.stringify({message: "Site is connected to the API Worker!"}));
-	},
+        request: Request,
+        env: Env,
+        ctx: ExecutionContext
+    ): Promise<Response> {
+
+        const response = router.handle(request)
+        return response;
+        
+    },
 };
