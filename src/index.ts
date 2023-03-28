@@ -1,34 +1,31 @@
-import { CRouter } from "./CRouter";
+import { CRouter } from "./CRouter/CRouter";
 
 export interface Env {}
 
 const router = new CRouter();
 
-
-
 router.all('/', (req, res, next) : Response | void => {
 
     console.log(`Request found, method: ${req.method}`);
-
     const path = new URL(req.url).pathname
     if (path === "/" || path === "/api/") {
         return res.send(JSON.stringify({message: "Site is connected to the API Worker!"}));
     }
-    
     next()
 
 })
 
 router.get('/path', (req, res, next) : Response | void => {
-
     next()
-
 })
 
 router.get('/path', (req, res, next) : Response | void => {
-    
-    return res.send("/path second found")
-
+    const data : {} = {
+        ...req.cf
+    }
+    return res.send(JSON.stringify({
+        data
+    }))
 })
 
 // Error catcher

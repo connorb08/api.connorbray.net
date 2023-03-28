@@ -43,7 +43,7 @@ export class CRouter {
             }
         }
 
-        return new Response("Request fell through!", {status: 500});
+        throw Error("Error: request fell through")
     }
 
 }

@@ -12,7 +12,9 @@
   "private": true,
   "scripts": {
     "start": "wrangler dev",
+    "dev": "wrangler dev",
     "deploy": "wrangler publish",
+    "publish": "wrangler publish",
     "test": "vitest",
     "build": "wrangler publish --dry-run --outdir=dist"
   }
