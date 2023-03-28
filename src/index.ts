@@ -4,12 +4,14 @@ export interface Env {}
 
 const router = new CRouter();
 
+
+
 router.all('/', (req, res, next) : Response | void => {
 
     console.log(`Request found, method: ${req.method}`);
 
     const path = new URL(req.url).pathname
-    if (path === "/") {
+    if (path === "/" || path === "/api/") {
         return res.send(JSON.stringify({message: "Site is connected to the API Worker!"}));
     }
     
