@@ -2,14 +2,14 @@ import { Env } from "..";
 import { CResponse } from "./CResponse"
 
 export type NextHandler = (data?: any) => Response | void
-export type CRouterHandler = (req : Request, res : CResponse, {env, ctx, next}: {env: Env, ctx: ExecutionContext, next: NextHandler}) => Response | void
+export type CRouterHandler = (req : Request, res : CResponse, {env, ctx, next}: {env: Env, ctx: ExecutionContext, next: NextHandler}) => Promise<Response> | Response | void
 
 interface RouteHandler {
     path: string,
     method: string,
     handler: CRouterHandler
 }
-export class CRouter {
+export default class CRouter {
 
     private routeArray: RouteHandler[] = [];
 
@@ -21,7 +21,7 @@ export class CRouter {
         this.routeArray.push({path, method: 'GET', handler});
     }
 
-    public handle = (req: Request, {env, ctx} : {env: Env, ctx: ExecutionContext}) : Response => {
+    public handle = (req: Request, {env, ctx} : {env: Env, ctx: ExecutionContext}) : Response | Promise<Response> => {
 
         const req_path = new URL(req.url).pathname
         const res = new CResponse();

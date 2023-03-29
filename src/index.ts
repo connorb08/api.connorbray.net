@@ -1,6 +1,9 @@
-import { CRouter } from "./CRouter/CRouter";
+import CRouter from "./CRouter/CRouter";
+import { GitHubData } from "./GitHub/GitHub";
 
-export interface Env {}
+export interface Env {
+    GH_TOKEN: string;
+}
 
 const router = new CRouter();
 
@@ -22,10 +25,8 @@ router.get('/cfinfo', (req, res, {next}) : Response | void => {
     }))
 })
 
-router.get('/ghinfo', (req, res, {next}) : Response | void => {
-    const data : {} = {
-        ...req.cf
-    }
+router.get('/ghinfo', async (req, res, {env, next}) : Promise<Response> => {
+    const data = await GitHubData(env);
     return res.send(JSON.stringify({
         data
     }))
