@@ -1,24 +1,27 @@
+import { Env } from "..";
 import { CResponse } from "./CResponse"
+
+export type NextHandler = (data?: any) => Response | void
+export type CRouterHandler = (req : Request, res : CResponse, {env, ctx, next}: {env: Env, ctx: ExecutionContext, next: NextHandler}) => Response | void
 
 interface RouteHandler {
     path: string,
     method: string,
-    handler: (req : Request, res : CResponse, next: (data?: any) => Response | void) => Response | void,
+    handler: CRouterHandler
 }
-
 export class CRouter {
 
     private routeArray: RouteHandler[] = [];
 
-    public all = (path: string, handler: (req : Request, res : CResponse, next: (data?: any) => Response | void) => Response | void) => {
+    public all = (path: string, handler: CRouterHandler) => {
         this.routeArray.push({path, method: '*', handler});
     }
 
-    public get = (path: string, handler: (req : Request, res : CResponse, next: (data?: any) => Response | void) => Response | void) => {
+    public get = (path: string, handler: CRouterHandler) => {
         this.routeArray.push({path, method: 'GET', handler});
     }
 
-    public handle = (req: Request) : Response => {
+    public handle = (req: Request, {env, ctx} : {env: Env, ctx: ExecutionContext}) : Response => {
 
         const req_path = new URL(req.url).pathname
         const res = new CResponse();
@@ -31,8 +34,9 @@ export class CRouter {
         })
 
         for (const node of matched_nodes) {
-            
-            const r = node.handler(req, res, () => undefined);
+
+            const n: NextHandler = (data?: any) => {console.log(data)}
+            const r = node.handler(req, res, {env, ctx, next: n});
             
             // Return if response is returned, else pass to next handler
             if (r !== undefined) {
@@ -43,7 +47,7 @@ export class CRouter {
             }
         }
 
-        throw Error("Error: request fell through")
+        throw Error("Error: request fell through router")
     }
 
 }
