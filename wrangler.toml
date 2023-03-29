@@ -1,10 +1,14 @@
 name = "connorbrayapi"
-main = "src/index.ts"
+main = "dist/index.js"
 compatibility_date = "2023-03-18"
 
 [build]
-command = "yarn"
+command = "yarn build"
 
+[build.upload]
+format = "modules"
+dir = "dist"
+main = "index.js"
 
 [env.producton]
 name = "connorbrayapi"

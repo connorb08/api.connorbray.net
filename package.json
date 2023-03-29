@@ -1,21 +1,26 @@
 {
   "name": "connorbrayapi",
-  "module": "src/index.ts",
+  "type": "module",
+  "module": "dist/index.js",
   "allowOverwrite": "true",
   "version": "0.0.0",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230307.0",
+    "esbuild": "^0.17.14",
+    "miniflare": "^2.13.0",
+    "tsc": "^2.0.4",
     "typescript": "^5.0.2",
     "vitest": "^0.29.3",
     "wrangler": "2.12.3"
   },
   "private": true,
   "scripts": {
+    "mjs": "npx tsc -d && mv dist/index.js dist/index.mjs",
     "start": "wrangler dev",
     "dev": "wrangler dev",
     "deploy": "wrangler publish",
     "publish": "wrangler publish",
     "test": "vitest",
-    "build": "wrangler publish --dry-run --outdir=dist"
+    "build": "npx esbuild --bundle --sourcemap --outdir=dist ./src/index.ts --format=esm"
   }
 }
