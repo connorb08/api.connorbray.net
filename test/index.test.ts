@@ -18,8 +18,8 @@ describe("Worker", () => {
 	it("should return Hello World", async () => {
 		const resp = await worker.fetch();
 		if (resp) {
-			const text = await resp.text();
-			expect(text).toMatchInlineSnapshot(`"Hello World!"`);
+			const res = await resp.json();
+			expect(res).toMatchObject({message: "Site is connected to the API Worker!"})
 		}
 	});
 });

@@ -1,11 +1,9 @@
-import CRouter from "./CRouter/CRouter";
+import router from '@connorb08/crouter'
 import { GitHubData } from "./GitHub/GitHub";
 
 export interface Env {
     GH_TOKEN: string;
 }
-
-const router = new CRouter();
 
 router.all('/', (req, res, {next}) : Response | void => {
     console.log(`Request found, method: ${req.method}`);
@@ -13,7 +11,7 @@ router.all('/', (req, res, {next}) : Response | void => {
     if (path === "/" || path === "/api/") {
         return res.send(JSON.stringify({message: "Site is connected to the API Worker!"}));
     }
-    next()
+    next();
 })
 
 router.get('/cfinfo', (req, res, {next}) : Response | void => {
@@ -26,7 +24,7 @@ router.get('/cfinfo', (req, res, {next}) : Response | void => {
 })
 
 router.get('/ghinfo', async (req, res, {env, next}) : Promise<Response> => {
-    const data = await GitHubData(env);
+    const data = await GitHubData(env as Env);
     return res.send(JSON.stringify({
         data
     }))

@@ -6,6 +6,7 @@
   "version": "0.0.0",
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230307.0",
+    "@connorb08/crouter": "^1.0.3",
     "esbuild": "^0.17.14",
     "miniflare": "^2.13.0",
     "tsc": "^2.0.4",
@@ -15,12 +16,12 @@
   },
   "private": true,
   "scripts": {
-    "mjs": "npx tsc -d && mv dist/index.js dist/index.mjs",
     "start": "wrangler dev",
     "dev": "wrangler dev",
     "deploy": "wrangler publish",
     "publish": "wrangler publish",
     "test": "vitest",
-    "build": "npx esbuild --bundle --sourcemap --outdir=dist ./src/index.ts --format=esm"
+    "build": "node build/build.js",
+    "clean": "rm -rf dist"
   }
 }
