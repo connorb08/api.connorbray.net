@@ -21,7 +21,7 @@
     "deploy": "wrangler publish",
     "publish": "wrangler publish",
     "test": "vitest",
-    "build": "node build/build.js",
+    "build": "node scripts/build.js",
     "clean": "rm -rf dist"
   }
 }

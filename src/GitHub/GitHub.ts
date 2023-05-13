@@ -19,7 +19,17 @@ export const GitHubData = async (env: Env) => {
     }
   );
 
-  const data = await res.json();
-  return data;
+  const data: any = await res.json();
+  const runs: {}[] = [];
+
+  for (const row of data.workflow_runs) {
+    runs.push({
+      name: row.name,
+      status: row.status,
+      conclusion: row.conclusion,
+    });
+  }
+
+  return runs;
   
 };
